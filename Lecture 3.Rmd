@@ -1,0 +1,59 @@
+---
+title: "Lecture 3 Notes"
+author: "JJS"
+date: "2022-09-08"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2) # load library; package name is ggplot2
+```
+
+```{r first_scatter}
+ggplot(data = midwest, 
+      mapping = aes(x = popdensity,
+                    y = percbelowpoverty)) + 
+  geom_point()
+```
+
+```{r different_graph} 
+ggplot(data = midwest, 
+      mapping = aes(x = popdensity,
+                    y = percbelowpoverty)) +
+  geom_point(mapping = aes(color = state)) +
+  geom_smooth() + # (method = "lm", se = FALSE) + # loess is a local smoother; lm is linear model, gives line of best fit, 
+      # se = [FALSE] gets rid of error bars
+  scale_x_log10() + # spread out the squished points (long-skewed tail of things) 
+  labs(x = "Population Density", 
+       y = "Percent in Poverty", 
+       title = "Density vs. Poverty in the Midwest") +
+      theme_minimal()
+```
+```{r histograms}
+ggplot(data = midwest, 
+       mapping = aes(x = percbelowpoverty)) + # only need to set 1 variable for histograms
+geom_histogram() +
+facet_wrap(~ state, ncol = 1) # all in 1 column
+```
+
+```{r boxplots} 
+# take a histogram and drill down into most essential features; 
+# can compare across categorical variable
+ggplot(data = midwest,
+       mapping = aes(x = state, 
+                     y = percbelowpoverty)) + 
+geom_boxplot(fill = "green")
+
+```
+```{r back-to-the-gap}
+library(gapminder)
+ggplot(data = gapminder,
+       mapping = aes(x = year,
+                     y = gdpPercap)) +
+geom_line(color = "grey70", mapping = aes(group = country)) + # separate line drawn for each country
+scale_y_log10() +
+geom_smooth()
+```
+
+
